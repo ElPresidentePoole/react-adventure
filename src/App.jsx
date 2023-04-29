@@ -16,6 +16,7 @@ function App() {
 
   return (
     <>
+      <h1>Adventure!</h1>
       <div>
         <Journal log={log} />
         <InputBox parseInput={parseInput} />

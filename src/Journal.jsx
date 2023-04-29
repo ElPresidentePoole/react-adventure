@@ -1,9 +1,9 @@
 export default Journal;
 
-import { JournalEntry } from './JournalEntry.jsx';
-
 function Journal({ log }) {
-  // TODO: list of journal entries
+  const list = log.map((o, i) => {
+    return (<li key={i}>{o}</li>);
+  });
 
-  return (<p>noob</p>)
+  return (<ul>{list}</ul>)
 }
