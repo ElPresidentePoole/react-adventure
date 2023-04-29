@@ -20,24 +20,32 @@ function App() {
     setLog([...log, msg]);
   }
 
+  function verbLook(noun) {
+    if (noun) {
+      let foundNoun = room.items.find(o => o.name == noun);
+      if (foundNoun) {
+        addToLog(foundNoun.desc);
+      } else {
+        addToLog(`I'm sorry, but I don't see a ${noun} around here!`);
+      }
+    } else {
+      addToLog(describeRoom(room));
+    }
+  }
+
+  function verbHelp() {
+      addToLog('Type "look" to look around, or look [object] to look closer at an object.');
+  }
+
   function parseInput(inputString) {
     const verb = inputString.split(' ')[0].toLowerCase();
     const noun = inputString.split(' ').length > 1 ? inputString.split(' ')[1].toLowerCase() : null;
 
     if(verb === "help") {
       //addToLog("Welcome to Adventure!  Type \"help\" for instructions!")
-      addToLog('Type "look" to look around, or look [object] to look closer at an object.');
+      verbHelp();
     } else if (verb === "look") {
-      if (noun) {
-        let foundNoun = room.items.find(o => o.name == noun);
-        if (foundNoun) {
-          addToLog(foundNoun.desc);
-        } else {
-          addToLog(`I'm sorry, but I don't see a ${noun} around here!`);
-        }
-      } else {
-        addToLog(describeRoom(room));
-      }
+      verbLook(noun);
     }
   }
 
