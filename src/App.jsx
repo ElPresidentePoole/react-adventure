@@ -14,7 +14,8 @@ function describeRoom(room) {
 
 function App() {
   const [room, setRoom] = useState(Rooms.bedroom);
-  const [log, setLog] = useState([describeRoom(room)]);
+  const [log, setLog] = useState(["Welcome to Adventure!  Type \"help\" for instructions!", describeRoom(room)]);
+  const [inventory, setInventory] = useState([]);
 
   function addToLog(msg) {
     setLog([...log, msg]);
@@ -33,19 +34,35 @@ function App() {
     }
   }
 
+  function verbTake(noun) {
+    if (noun) {
+      // FIXME: check if the noun is in the room first!
+      const nounIdx = room.items.findIndex(o => o.name == noun);
+      const nounItem = room.items[nounIdx];
+      setInventory([...inventory, nounItem]);
+      room.items = room.items.filter(o => o != nounItem);
+      const inv = inventory.length > 0 ? inventory.join(', ') : 'nothing';
+      addToLog(`You take the ${noun}.  You now have ${inv} in your inventory.`);
+    } else {
+      addToLog("Take what?");
+    }
+  }
+
   function verbHelp() {
-      addToLog('Type "look" to look around, or look [object] to look closer at an object.');
+    addToLog('Type "look" to look around, or look [object] to look closer at an object (e.g. "look couch" is a valid command).');
   }
 
   function parseInput(inputString) {
-    const verb = inputString.split(' ')[0].toLowerCase();
-    const noun = inputString.split(' ').length > 1 ? inputString.split(' ')[1].toLowerCase() : null;
+    const inputArray = inputString.split(' ');
+    const verb = inputArray[0].toLowerCase();
+    const noun = inputArray.length > 1 ? inputArray.slice(1).join(' ').toLowerCase() : null;
 
     if(verb === "help") {
-      //addToLog("Welcome to Adventure!  Type \"help\" for instructions!")
       verbHelp();
     } else if (verb === "look") {
       verbLook(noun);
+    } else if (verb === "take") {
+      verbTake(noun);
     }
   }
 
