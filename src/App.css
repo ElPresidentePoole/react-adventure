@@ -1,3 +1,21 @@
 .commandInput {
   width: 600px;
 }
+
+.fadeIn {
+  animation: fadeInAnimation 1s linear;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.side-by-side-element {
+  display: inline-block;
+  justify-content: top;
+}

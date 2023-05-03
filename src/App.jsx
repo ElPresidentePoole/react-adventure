@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import InputBox from './InputBox.jsx';
 import Journal from './Journal.jsx';
+import Inventory from './Inventory.jsx';
 import Rooms from './Rooms.jsx';
 import './App.css';
 
@@ -39,10 +40,15 @@ function App() {
       // FIXME: check if the noun is in the room first!
       const nounIdx = room.items.findIndex(o => o.name == noun);
       const nounItem = room.items[nounIdx];
-      setInventory([...inventory, nounItem]);
-      room.items = room.items.filter(o => o != nounItem);
-      const inv = inventory.length > 0 ? inventory.join(', ') : 'nothing';
-      addToLog(`You take the ${noun}.  You now have ${inv} in your inventory.`);
+      if(nounItem.takeable) {
+        room.items = room.items.filter(o => o != nounItem);
+        // NOTE: setState does not change the current state in already executing code!
+        // See: https://react.dev/reference/react/Component#setstate
+        setInventory([...inventory, nounItem]);
+        addToLog(`You take the ${noun}.`);
+      } else {
+        addToLog(`${nounItem.take_excuse}`);
+      }
     } else {
       addToLog("Take what?");
     }
@@ -70,7 +76,9 @@ function App() {
     <>
       <h1>Adventure!</h1>
       <div>
-        <Journal log={log} />
+        <Journal log={log} /> <Inventory inventory={inventory} />
+      </div>
+      <div>
         <InputBox parseInput={parseInput} />
       </div>
     </>

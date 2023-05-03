@@ -1,9 +1,7 @@
-export default Journal;
-
-function Journal({ log }) {
+export default function Journal({ log }) {
   const list = log.map((o, i) => {
-    return (<li key={i}>{o}</li>);
+    return (<li className="fadeIn" key={i}>{o}</li>);
   });
 
-  return (<ul>{list}</ul>)
+  return (<ul className="side-by-side-element">{list}</ul>)
 }
